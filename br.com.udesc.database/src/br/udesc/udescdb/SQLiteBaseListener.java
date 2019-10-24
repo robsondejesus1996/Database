@@ -11,6 +11,14 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * can be extended to create a listener which only needs to handle a subset of
  * the available methods.
  */
+
+
+/**
+ * 
+ * @author Robson de Jesus
+ */
+
+
 public class SQLiteBaseListener implements SQLiteListener {
 	/**
 	 * {@inheritDoc}

@@ -1,3 +1,5 @@
+package br.udesc.principal;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,7 +18,7 @@ import br.udesc.udescdb.SQLiteParser;
 
 /**
  *
- * @author Rj
+ * @author Robson de Jesus
  */
 public class TelaBanco extends javax.swing.JFrame {
 

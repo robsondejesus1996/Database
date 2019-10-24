@@ -1,3 +1,5 @@
+package br.udesc.principal;
+
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CodePointCharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -7,8 +9,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import br.udesc.udescdb.SQLiteBaseListener;
 import br.udesc.udescdb.SQLiteLexer;
 import br.udesc.udescdb.SQLiteParser;
-
-public class test {
+/**
+ * 
+ * @author Robson de Jesus
+ */
+public class Test {
 
 	public static void main(String[] args) {
 		String create = "create table xpto (col1 int, col2 char(20), col3 float)";

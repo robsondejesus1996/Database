@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author Robson de Jesus
+ */
+
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SQLiteParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }
