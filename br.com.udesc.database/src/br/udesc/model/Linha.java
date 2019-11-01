@@ -1,14 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.model;
 
-/**
- *
- * @author Rj
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class Linha {
+    
+    private List<Coluna> colunas;
+
+    public Linha() {
+        colunas = new  ArrayList<>();
+    }
+
+    public List<Coluna> getColunas() {
+        return colunas;
+    }
+    
+    public void addColuna(Coluna col) {
+        colunas.add(col); 
+    }
     
 }
