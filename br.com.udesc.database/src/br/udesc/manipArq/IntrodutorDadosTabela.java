@@ -23,19 +23,21 @@ public class IntrodutorDadosTabela {
         this.comando = ComandoSql.getInstance();
     }
 
-    public void inserir() throws Exception {
+    public boolean inserir() throws Exception {
         atulizarDiretorio();
+        if (this.diretorio == null) {
+            return false;
+        }
         List<Coluna> colunasParaInserir = obterColunasUtilizadas();
         if (colunasParaInserir == null) {
-            return;
+            return false;
         }
         RandomAccessFile ran = new RandomAccessFile(diretorio, "rw");
         ran.seek(diretorio.length());//escrevendo no final do arquivo
         for (Coluna coluna : colunasParaInserir) {
             if (coluna.isDesconsiderar()) {
                 byte[] byDesc = new byte[coluna.getTamanhoBytes()];
-                
-                
+
                 for (byte b : byDesc) {
                     ran.writeByte(0); //uma coluna desconsiderada tem todos os seus bytes vazios
                 }
@@ -44,22 +46,21 @@ public class IntrodutorDadosTabela {
                 if (coluna instanceof ColunaInt) {
                     ColunaInt colunaAux = (ColunaInt) coluna; //fazendo cast para poder obter o valor
                     ran.writeInt(colunaAux.getValor());
-                   
 
                 } else if (coluna instanceof ColunaFloat) {
                     ColunaFloat colunaAux = (ColunaFloat) coluna; //fazendo cast para poder obter o valor
                     ran.writeFloat(colunaAux.getValor());
-                    
 
                 } else if (coluna instanceof ColunaString) {
                     ColunaString colunaAux = (ColunaString) coluna; //fazendo cast para poder obter o valor
-                  
+
                     for (int i = 0; i < colunaAux.getValor().length(); i++) {
                         ran.write(colunaAux.getValor().charAt(i));
                     }
                 }
             }
         }
+        return true;
     }
 
     public void inserir(DataBase db) throws Exception {
@@ -83,7 +84,14 @@ public class IntrodutorDadosTabela {
 
     private void atulizarDiretorio() {
         this.diretorio = UtilArquivos.encontrarDataBase(this.comando.getBaseDados());
-        this.diretorio = UtilArquivos.encontrarTabela(diretorio, comando.getNomeTabela());
+        if (diretorio == null) {
+            JOptionPane.showMessageDialog(null, "base de dados nao encontrada");
+        } else {
+            this.diretorio = UtilArquivos.encontrarTabela(diretorio, comando.getNomeTabela());
+            if (diretorio == null) {
+                JOptionPane.showMessageDialog(null, "tabela nao encontrada");
+            }
+        }
     }
 
     private List<Coluna> obterColunasUtilizadas() throws Exception {
@@ -92,8 +100,13 @@ public class IntrodutorDadosTabela {
         for (Coluna coluna : colCab) {
             coluna.setDesconsiderar(true);
         }
+        if ( comando.getNomeColunas().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe pelomenos uma coluna para inserir");
+            return null;
+        }
+        
+        
         //descobrindo quais as colunas da tabela sao utilizadas no comando
-
         for (String nomeColuna : comando.getNomeColunas()) {
             boolean flagFoiUtilizado = true; //flag para garantir que todas as colunas do comando sao utilizadas...
             for (Coluna coluna : colCab) {
@@ -106,7 +119,7 @@ public class IntrodutorDadosTabela {
             //se esta variavel esta vazia e porque nenhuma coluna possui o mesmo nome
             if (flagFoiUtilizado) {
                 JOptionPane.showMessageDialog(null, "Coluna " + nomeColuna + " invalida");
-                return null; 
+                return null;
             }
         }
 
@@ -115,7 +128,7 @@ public class IntrodutorDadosTabela {
             if (!colCab.get(i).isDesconsiderar()) {
                 Coluna colAux = obterColunaComValor(colCab.get(i));
                 if (colAux != null) {
-                    colCab.set(i, colAux);  
+                    colCab.set(i, colAux);
                 } else {
                     //somente entra aki porque passou em alguma das condicoes do metodo obterColunaComValor()
                     return null;
@@ -137,10 +150,12 @@ public class IntrodutorDadosTabela {
                     novaColuna.setNome(colCabecario.getNome());
                     novaColuna.setTamanhoBytes(colCabecario.getTamanhoBytes());
                     novaColuna.setTipo('i');
+                    if (comando.getLiterais().get(i).equals("")) {
+                       novaColuna.setValor(0);
+                    } else {
+                        novaColuna.setValor(Integer.parseInt(comando.getLiterais().get(i)));
+                    }
 
-                    novaColuna.setValor(Integer.parseInt(comando.getLiterais().get(i)));
-
-                  
                     retorno = novaColuna;
 
                 } else if (colCabecario.getTipo() == 'f') {
@@ -149,9 +164,12 @@ public class IntrodutorDadosTabela {
                     novaColuna.setTamanhoBytes(colCabecario.getTamanhoBytes());
                     novaColuna.setTipo('f');
                     
-                    novaColuna.setValor(Float.parseFloat(comando.getLiterais().get(i)));
-
-                   
+                    if (comando.getLiterais().get(i).equals("")) {
+                       novaColuna.setValor(0f);
+                    } else {
+                        novaColuna.setValor(Float.parseFloat(comando.getLiterais().get(i)));
+                    }
+                    
                     retorno = novaColuna;
 
                 } else if (colCabecario.getTipo() == 'c') {
@@ -159,15 +177,14 @@ public class IntrodutorDadosTabela {
                     novaColuna.setNome(colCabecario.getNome());
                     novaColuna.setTamanhoBytes(colCabecario.getTamanhoBytes());
                     novaColuna.setTipo('c');
-                    comando.getLiterais().set(i, comando.getLiterais().get(i).replaceAll("'", "")); // tirando aspas para inserir
+                    //comando.getLiterais().set(i, comando.getLiterais().get(i).replaceAll("'", "")); // tirando aspas para inserir
                     if (comando.getLiterais().get(i).length() > novaColuna.getTamanhoBytes()) {
-                       JOptionPane.showMessageDialog(null, "String maior que o suportado pela tabela");
+                        JOptionPane.showMessageDialog(null, "String maior que o suportado pela tabela");
                         return null;
                     } else {
-                        novaColuna.setValor(UtilArquivos.trataTamanhoString(comando.getLiterais().get(i), novaColuna.getTamanhoBytes())); 
+                        novaColuna.setValor(UtilArquivos.trataTamanhoString(comando.getLiterais().get(i), novaColuna.getTamanhoBytes()));
                     }
 
-                    
                     retorno = novaColuna;
 
                 }

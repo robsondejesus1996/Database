@@ -9,7 +9,6 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
-import org.antlr.v4.runtime.misc.Utils;
 
 
 public class CriadorTabela {
@@ -23,28 +22,39 @@ public class CriadorTabela {
         
     }
     
-    public void criarTabela() {
+    public boolean criarTabela() {
         atulizarDiretorio();
+        if (diretorio == null) {
+            JOptionPane.showMessageDialog(null, "Base de dados nao encontrada");
+            return false;
+        }
         if (UtilArquivos.encontrarTabela(diretorio, comando.getNomeTabela()) != null) {
             JOptionPane.showMessageDialog(null, "Tabela informada ja existe nesta base de dados");
-            return;
+            return false;
         }
-        File novaTabela = new File(diretorio.getPath()+"\\"+comando.getNomeTabela()); 
+        
         try {
-            novaTabela.createNewFile();
-            criarCabecalhoTabela(novaTabela);
+            if (!criarCabecalhoTabela(diretorio.getPath()+"\\"+comando.getNomeTabela())) {
+                return false;
+            }
         } catch (Exception ex) {
             System.out.println("Houve um problema...");
+            return false;
         }
+        return true;
     }
     
     private void atulizarDiretorio() {
         this.diretorio = UtilArquivos.encontrarDataBase(this.comando.getBaseDados());
     }
     
-    private void criarCabecalhoTabela(File tabela) throws Exception{
-        RandomAccessFile ran = new RandomAccessFile(tabela, "rw");
+    private boolean criarCabecalhoTabela(String tabela) throws Exception{
         List<Coluna> colunasCabecario = converteParaColunaCabecario();
+        if (colunasCabecario == null) {
+            return false;
+        }
+        File arquiVoTabela = new File(tabela); // criando a tabela
+        RandomAccessFile ran = new RandomAccessFile(arquiVoTabela, "rw");
         
         //gravando numero de bytes das informacoes
         ran.writeInt(colunasCabecario.size() * 26);
@@ -60,11 +70,15 @@ public class CriadorTabela {
             //gravando tamanho da coluna
             ran.writeInt(coluna.getTamanhoBytes());
         }
-
+        return true;
     }
     
     private List<Coluna> converteParaColunaCabecario() {
         List<Coluna> colunas = new ArrayList<Coluna>();
+        if (comando.getNomeColunas().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Erro: a tabela precisa ter pelomenos uma coluna");
+            return null;
+        }
         for (int i = 0; i < comando.getNomeColunas().size(); i++) {
             Coluna colunaAux = new Coluna();
             colunaAux.setNome(comando.getNomeColunas().get(i));
