@@ -101,7 +101,7 @@ public class IntrodutorDadosTabela {
             coluna.setDesconsiderar(true);
         }
         if ( comando.getNomeColunas().size() == 0) {
-            JOptionPane.showMessageDialog(null, "Informe pelomenos uma coluna para inserir");
+            JOptionPane.showMessageDialog(null, "Informe pelo menos uma coluna para inserir");
             return null;
         }
         

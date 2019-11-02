@@ -76,7 +76,7 @@ public class CriadorTabela {
     private List<Coluna> converteParaColunaCabecario() {
         List<Coluna> colunas = new ArrayList<Coluna>();
         if (comando.getNomeColunas().size() == 0) {
-            JOptionPane.showMessageDialog(null, "Erro: a tabela precisa ter pelomenos uma coluna");
+            JOptionPane.showMessageDialog(null, "Erro: a tabela precisa ter pelo menos uma coluna");
             return null;
         }
         for (int i = 0; i < comando.getNomeColunas().size(); i++) {
