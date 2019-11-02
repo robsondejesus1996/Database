@@ -14,7 +14,7 @@ import java.util.List;
  * @author Robson de Jesus e Thiago Correira
  */
 public class ComandoSql {
-    
+
     private static ComandoSql instance;
     
     private String       comando;
@@ -46,7 +46,7 @@ public class ComandoSql {
     }
 
     public void setNomeTabela(String nomeTabela) {
-        this.nomeTabela = nomeTabela+".dat";
+        this.nomeTabela = nomeTabela;
     }
 
     public void addColuna(String nomeColuna) {
@@ -58,6 +58,8 @@ public class ComandoSql {
     }
 
     public void addLiteral(String literal) {
+        literal = literal.replaceAll("'", "");
+        System.out.println(literal);
         literais.add(literal);
     }
 
@@ -70,6 +72,9 @@ public class ComandoSql {
     }
 
     public String getNomeTabela() {
+        return nomeTabela + ".dat";
+    }
+    public String getNomeTabela2() {
         return nomeTabela;
     }
 
@@ -100,5 +105,5 @@ public class ComandoSql {
     public void limparLiterais() {
         literais.clear();
     }
-    
+
 }
