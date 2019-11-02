@@ -13,14 +13,15 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Robson de Jesus e Thiago Correira
  */
 public class UtilArquivos {
-    
-     private static final String ARQ_DADOS = "DADOS";
+
+    private static final String ARQ_DADOS = "DADOS";
 
     public static File encontrarDataBase(String nomeDatabase) {
         for (File arquivo : new File(ARQ_DADOS).listFiles()) {
@@ -47,6 +48,15 @@ public class UtilArquivos {
             stringValida += carac;
         }
         return stringValida;
+    }
+    public static String trataTamanhoStringEspacos(String strTratar, int tamanho){
+        strTratar = strTratar.trim();
+        if (strTratar.length() < tamanho) {
+            while (strTratar.length() < tamanho) {                
+                strTratar += " ";
+            }
+        }
+        return strTratar;
     }
 
     public static List<Coluna> montarColunasCabecalho(File diretorioTabela) throws Exception {
@@ -85,19 +95,31 @@ public class UtilArquivos {
         return colunasCabecario;
     }
 
-    public boolean comandoValido() {
+    public static boolean comandoValido() {
         ComandoSql comando = ComandoSql.getInstance();
-        if (!comando.getNomeTabela().matches("[\\w]*")) {
+        if (comando.getNomeTabela2() == null) {
+            JOptionPane.showMessageDialog(null, "Sql invalido");
+            return false;
+        }
+        if (!comando.getNomeTabela2().matches("[\\w]*")) {
+            JOptionPane.showMessageDialog(null, "o nome da tabela possui caracteres invalidos");
+            return false;
+        }
+        if (comando.getNomeTabela2().length() > 20) {
+            JOptionPane.showMessageDialog(null, "o nome da tabela pode possuir no maximo 20 caracteres");
             return false;
         }
         for (String nomeColuna : comando.getNomeColunas()) {
             if (nomeColuna.equals("")) {
+                JOptionPane.showMessageDialog(null, "colunas sem nome nao são validas");
                 return false;
             }
             if (nomeColuna.length() > 20) {
+                JOptionPane.showMessageDialog(null, "o nome de uma coluna pode possuir no maximo 20 caracteres \n erro na coluna: " + nomeColuna);
                 return false;
             }
-            if (!nomeColuna.matches("[\\w]*")) {
+            if (!nomeColuna.trim().matches("[\\w]*")) {
+                JOptionPane.showMessageDialog(null, "a coluna : "+ nomeColuna +"  possui caracteres invalidos" );
                 return false;
             }
             
@@ -105,5 +127,5 @@ public class UtilArquivos {
         return true;
 
     }
-    
+
 }
