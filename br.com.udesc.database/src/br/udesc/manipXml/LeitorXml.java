@@ -59,4 +59,58 @@ public class LeitorXml {
             this.dataBases.add(novaDataBase);
         }
     }
+private void criaTabela(Element dataBase, int index) {
+        
+        NodeList tabelas = dataBase.getElementsByTagName("table");
+        
+        for (int i = 0; i < tabelas.getLength(); i++) {
+            Node tabela = tabelas.item(i);
+            if (tabela.getNodeType() == Node.ELEMENT_NODE) {
+                Element elementoTabela = (Element) tabela;
+                
+                Tabela novaTabela = new Tabela();
+                novaTabela.setNome(elementoTabela.getAttributes().getNamedItem("name").getNodeValue());
+                criaColunasTabela(novaTabela, elementoTabela);
+                this.dataBases.get(index).addTabela(novaTabela); 
+            }
+
+        }
+    }
+   
+
+    private void criaColunasTabela(Tabela tabela, Element elementoTabela) {
+        NodeList colunas = elementoTabela.getElementsByTagName("column");
+        Linha linha = new Linha();
+        for (int i = 0; i < colunas.getLength(); i++) {
+            if (colunas.item(i).getNodeType() == Node.ELEMENT_NODE) {
+                
+                Element elementoColuna = (Element) colunas.item(i);
+                String nome = "";
+                String valor = "";
+                
+                NodeList atributosCol = elementoColuna.getChildNodes();
+                for (int j = 0; j < atributosCol.getLength(); j++) {
+                    if (atributosCol.item(j).getNodeType() == Node.ELEMENT_NODE) {
+                        
+                        Element atributo = (Element) atributosCol.item(j);
+                        switch (atributo.getTagName()) {
+                            case "name":
+                                nome = (atributo.getTextContent() == null) ? " " : atributo.getTextContent();
+                                break;
+                            case "value":
+                                valor = (atributo.getTextContent() == null) ? " " : atributo.getTextContent();
+                                break;
+                        }
+                    }
+                }
+                
+                ColunaString coluna = new ColunaString();
+                coluna.setNome(nome);
+                coluna.setValor(valor);
+                linha.addColuna(coluna);
+
+            }
+        }
+        tabela.addLinha(linha); 
+    }
 }
