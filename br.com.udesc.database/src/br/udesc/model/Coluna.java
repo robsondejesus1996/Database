@@ -7,7 +7,7 @@ package br.udesc.model;
 
 /**
  *
- * @author 09527658969
+ * @author Robson de Jesus e Thiago Correira
  */
 public class Coluna {
     private String  nome;  //20 bytes
