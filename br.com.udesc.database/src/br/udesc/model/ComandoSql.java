@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * classe que representa um comando sql
- * esta classe e um SingleTom
+ * 
  * 
  */
 public class ComandoSql {
