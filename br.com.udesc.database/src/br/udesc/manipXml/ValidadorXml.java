@@ -12,12 +12,24 @@ import javax.xml.validation.Validator;
 import org.xml.sax.SAXException;
 
 
+
+/**
+ *
+ * @author Robson de Jesus e Thiago Moraes Correia
+ */
+
+/**
+ * classe responsavel por fazer a validacao do XML
+ */
 public class ValidadorXml {
     
-    
+    /**
+     * metodo estatico para fazer a validacao de um XMl
+     * 
+     * @param arqXml xml que sera verificado
+     * @return true se o xml for valido <br> false caso o contrario
+     */
     public static boolean validaXML(File arqXml) {
-
-        File f = new File(arqXml.getAbsolutePath());
 
         try {
             SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);

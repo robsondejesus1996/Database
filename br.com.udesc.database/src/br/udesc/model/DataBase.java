@@ -1,17 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.model;
-
 
 import java.util.ArrayList;
 import java.util.List;
+
+
+
 /**
  *
- * @author Robson de Jesus e Thiago Correira
+ * @author Robson de Jesus e Thiago Moraes Correia
  */
+
+
 public class DataBase {
     
     private String       nome;
@@ -40,9 +39,5 @@ public class DataBase {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
-    
-    
-    
-    
+     
 }

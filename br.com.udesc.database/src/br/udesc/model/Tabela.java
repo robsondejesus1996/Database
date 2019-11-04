@@ -1,23 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+
 /**
  *
- * @author Robson de Jesus e Thiago Correira
+ * @author Robson de Jesus e Thiago Moraes Correia
  */
+
 public class Tabela {
     
-    
     private String       nome;
-    private List<Coluna> colunasCabecario;
+    private List<Coluna> colunasCabecalho;
     private List<Linha>  linhas;
 
     public Tabela() {
@@ -32,12 +28,12 @@ public class Tabela {
         this.nome = nome;
     }
     
-    public List<Coluna> getColunasCabecario() {
-        return colunasCabecario;
+    public List<Coluna> getColunasCabecalho() {
+        return colunasCabecalho;
     }
 
-    public void setColunasCabecario(List<Coluna> colunasCabecario) {
-        this.colunasCabecario = colunasCabecario;
+    public void setColunasCabecalho(List<Coluna> colunasCabecario) {
+        this.colunasCabecalho = colunasCabecario;
     }
 
     public List<Linha> getLinhas() {
@@ -48,4 +44,5 @@ public class Tabela {
         this.linhas.add(linha);
     }
     
+
 }

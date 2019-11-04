@@ -2,6 +2,9 @@ package br.udesc.udescdb;
 
 // Generated from SQLite.g4 by ANTLR 4.7.2
 
+import br.udesc.model.ComandoSql;
+import br.udesc.udescdb.SQLiteListener;
+import br.udesc.udescdb.SQLiteParser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -11,14 +14,6 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * can be extended to create a listener which only needs to handle a subset of
  * the available methods.
  */
-
-
-/**
- * 
- * @author Robson de Jesus
- */
-
-
 public class SQLiteBaseListener implements SQLiteListener {
 	/**
 	 * {@inheritDoc}
@@ -271,7 +266,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterCreate_table_stmt(SQLiteParser.Create_table_stmtContext ctx) {
-		System.out.println("Comando create table");
+		
+                ComandoSql.getInstance().setComando("create");
 	}
 
 	/**
@@ -536,7 +532,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterInsert_stmt(SQLiteParser.Insert_stmtContext ctx) {
-		System.out.println("Comando insert");
+		
+                ComandoSql.getInstance().setComando("insert");
 	}
 
 	/**
@@ -823,7 +820,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterType_name(SQLiteParser.Type_nameContext ctx) {
-		System.out.println("Tipo da coluna " + ctx.getText());
+		
+                ComandoSql.getInstance().addTipoColuna(ctx.getText());
 	}
 
 	/**
@@ -1220,7 +1218,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterSelect_core(SQLiteParser.Select_coreContext ctx) {
-		System.out.println("Comando select");
+		
+                ComandoSql.getInstance().setComando("select");
 	}
 
 	/**
@@ -1309,7 +1308,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterLiteral_value(SQLiteParser.Literal_valueContext ctx) {
-		System.out.println("Literal " + ctx.getText());
+		
+                ComandoSql.getInstance().addLiteral(ctx.getText());
 	}
 
 	/**
@@ -1486,6 +1486,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterDatabase_name(SQLiteParser.Database_nameContext ctx) {
+                   
+                ComandoSql.getInstance().setBaseDados(ctx.getText());
 	}
 
 	/**
@@ -1508,7 +1510,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterTable_name(SQLiteParser.Table_nameContext ctx) {
-		System.out.println("Nome da tabela " + ctx.getText());
+		
+                ComandoSql.getInstance().setNomeTabela(ctx.getText());
 	}
 
 	/**
@@ -1575,7 +1578,8 @@ public class SQLiteBaseListener implements SQLiteListener {
 	 */
 	@Override
 	public void enterColumn_name(SQLiteParser.Column_nameContext ctx) {
-		System.out.println("Nome da coluna " + ctx.getText());
+		
+                ComandoSql.getInstance().addColuna(ctx.getText());
 	}
 
 	/**

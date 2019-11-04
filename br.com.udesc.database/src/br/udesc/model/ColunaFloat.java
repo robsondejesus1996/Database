@@ -1,5 +1,10 @@
 package br.udesc.model;
 
+/**
+ *
+ * @author Robson de Jesus e Thiago Moraes Correia
+ */
+
 
 public class ColunaFloat extends Coluna {
     

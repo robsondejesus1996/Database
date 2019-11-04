@@ -1,20 +1,23 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.udesc.model;
 
 import br.udesc.utils.UtilArquivos;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  *
- * @author Robson de Jesus e Thiago Correira
+ * @author Robson de Jesus e Thiago Moraes Correia
+ */
+
+/**
+ * classe que representa um comando sql
+ * esta classe e um SingleTom
+ * 
  */
 public class ComandoSql {
-
+    
+    //atributo da unica instancia deste objeto no projeto inteiro
     private static ComandoSql instance;
     
     private String       comando;
@@ -23,13 +26,15 @@ public class ComandoSql {
     private List<String> nomeColunas;
     private List<String> tipoColunas;
     private List<String> literais;
-
+    
+    //construtor privado
     private ComandoSql() {
         nomeColunas = new ArrayList<String>();
         tipoColunas = new ArrayList<String>();
         literais    = new ArrayList<String>();
     }
     
+    //metodo que retorna a instancia deste objeto
     public static ComandoSql getInstance() {
         if (instance == null) {
             instance = new ComandoSql();
@@ -59,7 +64,6 @@ public class ComandoSql {
 
     public void addLiteral(String literal) {
         literal = literal.replaceAll("'", "");
-        System.out.println(literal);
         literais.add(literal);
     }
 

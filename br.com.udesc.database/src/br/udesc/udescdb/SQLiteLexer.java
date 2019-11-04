@@ -9,12 +9,6 @@ import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.misc.*;
 
-
-/**
- * 
- * @author Robson de Jesus
- */
-
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class SQLiteLexer extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.7.2", RuntimeMetaData.VERSION); }

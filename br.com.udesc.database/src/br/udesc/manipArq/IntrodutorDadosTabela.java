@@ -14,6 +14,16 @@ import java.io.RandomAccessFile;
 import java.util.List;
 import javax.swing.JOptionPane;
 
+
+
+/**
+ *
+ * @author Robson de Jesus e Thiago Moraes Correia
+ */
+
+/**
+ * classe responsavel por inserri dados em uma tabela
+ */
 public class IntrodutorDadosTabela {
 
     private File diretorio;
@@ -23,8 +33,15 @@ public class IntrodutorDadosTabela {
         this.comando = ComandoSql.getInstance();
     }
 
+    /**
+     * metodo que insere dados em uma tabela se basenado pelo comandoSql
+     *
+     * @return true se inserio corretamente <br> false caso contrario
+     * @throws Exception
+     */
     public boolean inserir() throws Exception {
         atulizarDiretorio();
+        //validacoes
         if (this.diretorio == null) {
             return false;
         }
@@ -32,8 +49,10 @@ public class IntrodutorDadosTabela {
         if (colunasParaInserir == null) {
             return false;
         }
+        //inserindo
         RandomAccessFile ran = new RandomAccessFile(diretorio, "rw");
         ran.seek(diretorio.length());//escrevendo no final do arquivo
+        //iterando as colunas que serao inseridas
         for (Coluna coluna : colunasParaInserir) {
             if (coluna.isDesconsiderar()) {
                 byte[] byDesc = new byte[coluna.getTamanhoBytes()];
@@ -63,6 +82,13 @@ public class IntrodutorDadosTabela {
         return true;
     }
 
+    /**
+     * metodo que ajusta o comando sql de acordo com os dados da database
+     * informada e insere esses dados
+     *
+     * @param db
+     * @throws Exception
+     */
     public void inserir(DataBase db) throws Exception {
         comando.limparDados();
         comando.setBaseDados(db.getNome());
@@ -75,13 +101,17 @@ public class IntrodutorDadosTabela {
                     comando.addLiteral(colunaAux.getValor());
                 }
             }
-            inserir();
+            inserir(); //insere por meio do outro metodo inserir
             comando.limparColunas();
             comando.limparLiterais();
 
         }
     }
 
+    /**
+     * meotodo responvavel por atualizar o diretorio e fazer as devidas
+     * validacoes
+     */
     private void atulizarDiretorio() {
         this.diretorio = UtilArquivos.encontrarDataBase(this.comando.getBaseDados());
         if (diretorio == null) {
@@ -94,18 +124,24 @@ public class IntrodutorDadosTabela {
         }
     }
 
+    /**
+     * metodo que retorna uma lista de colunas com o seu valor, e tambem com as
+     * colunas ordenadas igual as colunas do cabecalho da tabela
+     *
+     * @return
+     * @throws Exception
+     */
     private List<Coluna> obterColunasUtilizadas() throws Exception {
         List<Coluna> colCab = UtilArquivos.montarColunasCabecalho(diretorio);
         //setando todas para desconsiderar
         for (Coluna coluna : colCab) {
             coluna.setDesconsiderar(true);
         }
-        if ( comando.getNomeColunas().size() == 0) {
-            JOptionPane.showMessageDialog(null, "Informe pelo menos uma coluna para inserir");
+        if (comando.getNomeColunas().size() == 0) {
+            JOptionPane.showMessageDialog(null, "Informe pelomenos uma coluna para inserir");
             return null;
         }
-        
-        
+
         //descobrindo quais as colunas da tabela sao utilizadas no comando
         for (String nomeColuna : comando.getNomeColunas()) {
             boolean flagFoiUtilizado = true; //flag para garantir que todas as colunas do comando sao utilizadas...
@@ -126,7 +162,7 @@ public class IntrodutorDadosTabela {
         //os elementos que sao considerados devem ser atualizados
         for (int i = 0; i < colCab.size(); i++) {
             if (!colCab.get(i).isDesconsiderar()) {
-                Coluna colAux = obterColunaComValor(colCab.get(i));
+                Coluna colAux = obterColunaComValor(colCab.get(i)); //obtendo a coluna com o valor
                 if (colAux != null) {
                     colCab.set(i, colAux);
                 } else {
@@ -138,6 +174,13 @@ public class IntrodutorDadosTabela {
         return colCab;
     }
 
+    /**
+     * metodo que transforma uma coluna em uma coluna com valor se baseando no
+     * comando sql
+     *
+     * @param colCabecario
+     * @return generalizacao de uma coluna com valor
+     */
     private Coluna obterColunaComValor(Coluna colCabecario) {
         Coluna retorno = null;
         //obtendo literal para esta coluna
@@ -146,12 +189,13 @@ public class IntrodutorDadosTabela {
             if (comando.getNomeColunas().get(i).equals(colCabecario.getNome())) {
                 //verificando por tipo
                 if (colCabecario.getTipo() == 'i') {
+                    //criando coluna int
                     ColunaInt novaColuna = new ColunaInt();
                     novaColuna.setNome(colCabecario.getNome());
                     novaColuna.setTamanhoBytes(colCabecario.getTamanhoBytes());
                     novaColuna.setTipo('i');
                     if (comando.getLiterais().get(i).equals("")) {
-                       novaColuna.setValor(0);
+                        novaColuna.setValor(0);
                     } else {
                         novaColuna.setValor(Integer.parseInt(comando.getLiterais().get(i)));
                     }
@@ -159,25 +203,26 @@ public class IntrodutorDadosTabela {
                     retorno = novaColuna;
 
                 } else if (colCabecario.getTipo() == 'f') {
+                    //criando coluna float
                     ColunaFloat novaColuna = new ColunaFloat();
                     novaColuna.setNome(colCabecario.getNome());
                     novaColuna.setTamanhoBytes(colCabecario.getTamanhoBytes());
                     novaColuna.setTipo('f');
-                    
+
                     if (comando.getLiterais().get(i).equals("")) {
-                       novaColuna.setValor(0f);
+                        novaColuna.setValor(0f);
                     } else {
                         novaColuna.setValor(Float.parseFloat(comando.getLiterais().get(i)));
                     }
-                    
+
                     retorno = novaColuna;
 
                 } else if (colCabecario.getTipo() == 'c') {
+                    //criando coluna char
                     ColunaString novaColuna = new ColunaString();
                     novaColuna.setNome(colCabecario.getNome());
                     novaColuna.setTamanhoBytes(colCabecario.getTamanhoBytes());
                     novaColuna.setTipo('c');
-                    //comando.getLiterais().set(i, comando.getLiterais().get(i).replaceAll("'", "")); // tirando aspas para inserir
                     if (comando.getLiterais().get(i).length() > novaColuna.getTamanhoBytes()) {
                         JOptionPane.showMessageDialog(null, "String maior que o suportado pela tabela");
                         return null;

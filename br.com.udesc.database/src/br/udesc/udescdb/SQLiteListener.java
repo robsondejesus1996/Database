@@ -6,12 +6,6 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
  * This interface defines a complete listener for a parse tree produced by
  * {@link SQLiteParser}.
  */
-
-/**
- * 
- * @author Robson de Jesus
- */
-
 public interface SQLiteListener extends ParseTreeListener {
 	/**
 	 * Enter a parse tree produced by {@link SQLiteParser#parse}.
