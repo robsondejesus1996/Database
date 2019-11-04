@@ -107,6 +107,11 @@ public class TelaDb extends javax.swing.JFrame {
         });
 
         jButton5.setText("Ajuda");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -286,6 +291,25 @@ public class TelaDb extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnSairActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        
+        JOptionPane.showMessageDialog(null, "Funcionalidade de Criar base de dados\n" +
+"•	Clique no botão para criar a base, e escolha um nome \n" +
+"\n" +
+"Funcionalidade de Criar tabela\n" +
+"•	Escreva no console: create table [<nomebd>].<nometabela> ( <nomecol> <tipocol> [,<nomecol> <tipocol>]*).\n" +
+"\n" +
+"Funcionalidade de Inserir na tabela\n" +
+"•	Escreva no console: insert into [<nomebd>].<nometabela> (<nomecol> [,<nomecol>]*) values (<literal> [,<literal>]*)\n" +
+"\n" +
+"Funcionalidade de selecionar dados da tabela\n" +
+"•	Escreva no console: select * from [<nomebd>].<nometabela>\n" +
+"\n" +
+"Funcionalidade de importação de dados na tabela a partir do XML\n" +
+"•	Selecione o XMl, mas lembrando a validação desse xml vai em consideração a tabela e os campos da tabela.");
+    }//GEN-LAST:event_jButton5ActionPerformed
     /**
      * metodo responsavel por fazer o print no textArea dos dados da tabela
      * selecionada
