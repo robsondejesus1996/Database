@@ -131,13 +131,13 @@ public class TelaDb extends javax.swing.JFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton3)
-                                .addGap(34, 34, 34)
-                                .addComponent(jButton2)
-                                .addGap(92, 92, 92)
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnSair)))))
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnSair, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -333,15 +333,15 @@ public class TelaDb extends javax.swing.JFrame {
                 //obtendo pelo tipo
                 if (coluna instanceof ColunaInt) {
                     ColunaInt col = (ColunaInt) coluna;
-                    resultSelect += UtilArquivos.trataTamanhoStringEspacos(col.getValor() + "", tamString) + "| ";
+                    resultSelect += UtilArquivos.trataTamanhoStringEspacos((col.isDesconsiderar() ? "<NULL>" : col.getValor())+ "", tamString)+ "| ";
 
                 } else if (coluna instanceof ColunaFloat) {
                     ColunaFloat col = (ColunaFloat) coluna;
-                    resultSelect += UtilArquivos.trataTamanhoStringEspacos(col.getValor() + "", tamString) + "| ";
+                    resultSelect += UtilArquivos.trataTamanhoStringEspacos((col.isDesconsiderar() ? "<NULL>" : col.getValor())+ "", tamString)+ "| ";
 
                 } else if (coluna instanceof ColunaString) {
                     ColunaString col = (ColunaString) coluna;
-                    resultSelect += UtilArquivos.trataTamanhoStringEspacos(col.getValor() + "", tamString) + "| ";
+                    resultSelect += UtilArquivos.trataTamanhoStringEspacos((col.isDesconsiderar() ? "<NULL>" : col.getValor())+ "", tamString)+ "| ";
                 }
             }
             resultSelect += "\n";

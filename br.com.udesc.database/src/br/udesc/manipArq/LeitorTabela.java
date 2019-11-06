@@ -62,8 +62,10 @@ public class LeitorTabela {
                     colAux.setTipo(coluna.getTipo());
                     colAux.setTamanhoBytes(coluna.getTamanhoBytes());
                     colAux.setValor(ran.readInt());
+                    
+                    colAux.setDesconsiderar(ran.readBoolean());
 
-                    bytesParaLer -= coluna.getTamanhoBytes();
+                    bytesParaLer -= coluna.getTamanhoBytes() + 1; // 1 do boolean
                     linhaAux.addColuna(colAux);
 
                 } else if (coluna.getTipo() == 'f') {
@@ -72,8 +74,10 @@ public class LeitorTabela {
                     colAux.setTipo(coluna.getTipo());
                     colAux.setTamanhoBytes(coluna.getTamanhoBytes());
                     colAux.setValor(ran.readFloat());
+                    
+                    colAux.setDesconsiderar(ran.readBoolean());
 
-                    bytesParaLer -= coluna.getTamanhoBytes();
+                    bytesParaLer -= coluna.getTamanhoBytes() + 1; // 1 do boolean
                     linhaAux.addColuna(colAux);
 
                 } else if (coluna.getTipo() == 'c') {
@@ -92,8 +96,10 @@ public class LeitorTabela {
                     }
 
                     colAux.setValor(valor);
+                    
+                    colAux.setDesconsiderar(ran.readBoolean());
 
-                    bytesParaLer -= coluna.getTamanhoBytes();
+                    bytesParaLer -= coluna.getTamanhoBytes() + 1; // 1 do boolean
                     linhaAux.addColuna(colAux);
                 }
             }

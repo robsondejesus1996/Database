@@ -60,15 +60,18 @@ public class IntrodutorDadosTabela {
                 for (byte b : byDesc) {
                     ran.writeByte(0); //uma coluna desconsiderada tem todos os seus bytes vazios
                 }
+                ran.writeBoolean(true);
             } else {
                 //verificando o tipo da coluna
                 if (coluna instanceof ColunaInt) {
                     ColunaInt colunaAux = (ColunaInt) coluna; //fazendo cast para poder obter o valor
                     ran.writeInt(colunaAux.getValor());
+                    ran.writeBoolean(false);
 
                 } else if (coluna instanceof ColunaFloat) {
                     ColunaFloat colunaAux = (ColunaFloat) coluna; //fazendo cast para poder obter o valor
                     ran.writeFloat(colunaAux.getValor());
+                    ran.writeBoolean(false);
 
                 } else if (coluna instanceof ColunaString) {
                     ColunaString colunaAux = (ColunaString) coluna; //fazendo cast para poder obter o valor
@@ -76,6 +79,7 @@ public class IntrodutorDadosTabela {
                     for (int i = 0; i < colunaAux.getValor().length(); i++) {
                         ran.write(colunaAux.getValor().charAt(i));
                     }
+                    ran.writeBoolean(false);
                 }
             }
         }
@@ -134,12 +138,16 @@ public class IntrodutorDadosTabela {
     private List<Coluna> obterColunasUtilizadas() throws Exception {
         List<Coluna> colCab = UtilArquivos.montarColunasCabecalho(diretorio);
         //setando todas para desconsiderar
-        for (Coluna coluna : colCab) {
-            coluna.setDesconsiderar(true);
-        }
         if (comando.getNomeColunas().size() == 0) {
             JOptionPane.showMessageDialog(null, "Informe pelomenos uma coluna para inserir");
             return null;
+        }
+        if (comando.getNomeColunas().size() != comando.getLiterais().size()) {
+            JOptionPane.showMessageDialog(null, "Quantidade de colunas e de valores para inserir sao diferentes");
+            return null;
+        }
+        for (Coluna coluna : colCab) {
+            coluna.setDesconsiderar(true);
         }
 
         //descobrindo quais as colunas da tabela sao utilizadas no comando
