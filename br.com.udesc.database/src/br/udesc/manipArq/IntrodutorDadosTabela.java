@@ -93,7 +93,9 @@ public class IntrodutorDadosTabela {
      * @param db
      * @throws Exception
      */
-    public void inserir(DataBase db) throws Exception {
+    public boolean inserir(DataBase db) throws Exception {
+        boolean result = false;
+        
         comando.limparDados();
         comando.setBaseDados(db.getNome());
         for (Tabela tabela : db.getTabelas()) {
@@ -105,11 +107,15 @@ public class IntrodutorDadosTabela {
                     comando.addLiteral(colunaAux.getValor());
                 }
             }
-            inserir(); //insere por meio do outro metodo inserir
+            result = inserir(); //insere por meio do outro metodo inserir
             comando.limparColunas();
             comando.limparLiterais();
+            if (!result) {
+                break;
+            }
 
         }
+        return result;
     }
 
     /**

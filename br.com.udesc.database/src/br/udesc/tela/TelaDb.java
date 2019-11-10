@@ -257,6 +257,7 @@ public class TelaDb extends javax.swing.JFrame {
      * @param evt
      */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        ComandoSql.getInstance().limparDados();
         JFileChooser fc = new JFileChooser();
         fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
         //selecionado arquivo
@@ -266,18 +267,30 @@ public class TelaDb extends javax.swing.JFrame {
         if (ValidadorXml.validaXML(arqXml)) { //se o xml for valido
             LeitorXml leitor = new LeitorXml();
             IntrodutorDadosTabela intr = new IntrodutorDadosTabela();
+            boolean flagInserio = false;
             try {
                 //lendo o xml
                 List<DataBase> dbs = leitor.ler(arqXml);
                 //inserindo os dados lidos
                 for (DataBase db : dbs) {
-                    intr.inserir(db);
+                    if (intr.inserir(db)) {
+                       flagInserio = true;
+                    } else {
+                       flagInserio = false; 
+                       ComandoSql.getInstance().limparDados();
+                       break;
+                    }
                 }
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Erro ao ler o XMl");
                 return;
             }
-            JOptionPane.showMessageDialog(null, "Registros inseridos com sucesso!");
+            
+            if (flagInserio) {
+                JOptionPane.showMessageDialog(null, "Registros inseridos com sucesso!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Erro ao inserir os registros do Xml!");
+            }
         }
 
 
