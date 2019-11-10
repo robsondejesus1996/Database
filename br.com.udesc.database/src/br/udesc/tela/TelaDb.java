@@ -263,6 +263,10 @@ public class TelaDb extends javax.swing.JFrame {
         //selecionado arquivo
         fc.showOpenDialog(this);
         File arqXml = fc.getSelectedFile(); //arquivo xml selecionado
+        //Se nenhum arquivo for selecionado
+        if(arqXml == null){
+            return;
+        }
 
         if (ValidadorXml.validaXML(arqXml)) { //se o xml for valido
             LeitorXml leitor = new LeitorXml();
