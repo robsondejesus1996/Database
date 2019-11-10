@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.udesc.principal;
+package br.udesc.principal;
 
 import br.udesc.tela.TelaDb;
 
